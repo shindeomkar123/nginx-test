@@ -14,12 +14,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test --if-present
+      - name: Build containers
+        run: docker compose build
+
+      - name: Run containers
+        run: docker compose up -d
+
+      - name: Wait for 10 seconds
+        run: sleep 10
+
+      - name: Smoke test via NGINX
+        run: |
+          curl -f https://localhost:8443 || exit 1
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose logs
+
+      - name: Shutdown containers
+        if: always()
+        run: docker compose down
