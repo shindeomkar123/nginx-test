@@ -21,11 +21,9 @@ jobs:
         with:
           node-version: 20
           cache: "npm"
-      - name: Build containers
-        run: docker compose build
 
-      - name: Run containers
-        run: docker compose up -d
+      - name: Docker Compose Action
+        uses: hoverkraft-tech/compose-action@v2.4.2
 
       - name: Wait for 10 seconds
         run: sleep 10
