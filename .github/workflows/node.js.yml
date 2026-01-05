@@ -17,14 +17,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Code review using ESLint
-        uses: moneyforward/eslint-action@v0.0.3
-
       - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
+
+      - name: Code review using ESLint
+        uses: moneyforward/eslint-action@v0.0.3
 
       - name: Docker Compose Action
         uses: hoverkraft-tech/compose-action@v2.4.2
